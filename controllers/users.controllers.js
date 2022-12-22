@@ -28,41 +28,34 @@ const signUpUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  var { password, email } = req.body;
   const token = req.headers.authorization;
-  console.log(token,email,password);
   if (token) {
-    console.log(token,"token");
-    let decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decoded,"decoded");
+    let decoded = jwt.verify(token, "syed25794");
     if (decoded) {
-      res.send({ msg: "login successfull" });
+      res.send("Login Successfully.");
     } else {
-      const findUser =  User.find({ email : email });
-      console.log(findUser);
-      bcrypt.compare(password, findUser.password, async (error, result) => {
-        if (error) {
-          res.send({ msg: "error in comparing password" });
+      const result = await User.findOne({ email });
+      console.log(result);
+      bcrypt.compare(password, result.password, async (error, result) => {
+        if (result) {
+          res.send("Login Successfully.");
         } else {
-          console.log(process.env.SECRET_KEY,"KEY");
-          let token = jwt.sign({ foo: "bar" }, process.env.SECRET_KEY);
-          console.log("token",token);
-          req.headers.authorization = `bearer ${token}`;
-          res.send({ msg: "login successfull" });
+          res.send("Invalid Credentials!");
         }
       });
     }
   } else {
-    // bcrypt.compare(password, findUser.password, async (error, result) => {
-    //   if (error) {
-    //     res.send({ msg: "error in comparing password" });
-    //   } else {
-    //     let token = jwt.sign({ foo: "bar" }, process.env.SECRET_KEY);
-    //     console.log("token",token);
-    //     req.headers.authorization = `bearer ${token}`;
-    //     res.send({ msg: "login successfull" });
-    //   }
-    // });
+    const { email, password } = req.body;
+    const result = await User.findOne({ email });
+    console.log(result);
+    bcrypt.compare(password, result.password, async (error, result) => {
+      if (result) {
+        res.send("Login Successfully.");
+      } else {
+        res.send("Invalid Credentials!");
+      }
+    });
   }
 };
 
