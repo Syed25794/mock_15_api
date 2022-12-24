@@ -10,7 +10,7 @@ const signUpUser = async (req, res) => {
   if (existingUser.length) {
     res.send({ msg: "User Already Exists please login" });
   } else {
-    bcrypt.hash(password, 6, async (error, result) => {
+    bcrypt.hash(password, 5, async (error, result) => {
       if (error) {
         res.send({
           msg: "Something went wrong in hashing. Please sign up later.",
