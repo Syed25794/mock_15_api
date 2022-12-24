@@ -34,15 +34,15 @@ const loginUser = async (req, res) => {
   if (token) {
     let decoded = jwt.verify(token, "syed25794");
     if (decoded) {
-      res.send("Login Successfully.");
+      res.send({"msg":"Login Successfully."});
     } else {
       const result = await User.findOne({ email });
       console.log(result);
       bcrypt.compare(password, result.password, async (error, result) => {
         if (result) {
-          res.send("Login Successfully.");
+          res.send({"msg":"Login Successfully."});
         } else {
-          res.send("Invalid Credentials!");
+          res.send({"msg":"Invalid Credentials!"});
         }
       });
     }
