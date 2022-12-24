@@ -37,7 +37,6 @@ const loginUser = async (req, res) => {
       res.send({"msg":"Login Successfully."});
     } else {
       const result = await User.findOne({ email });
-      console.log(result);
       bcrypt.compare(password, result.password, async (error, result) => {
         if (result) {
           res.send({"msg":"Login Successfully."});
@@ -49,7 +48,6 @@ const loginUser = async (req, res) => {
   } else {
     const { email, password } = req.body;
     const result = await User.findOne({ email });
-    console.log(result);
     bcrypt.compare(password, result.password, async (error, result) => {
       if (result) {
         res.send("Login Successfully.");
